@@ -29,10 +29,24 @@ class MariaDatabase implements DatabaseInterface
     {
         $statement = $this->connection->prepare($sql);
         foreach ($bindParameters as $parameterName => &$parameterValue) {
-            $statement->bindParam($parameterName, $parameterValue);
+            $statement->bindParam($parameterName, $parameterValue, $this->getParamType($parameterValue));
         }
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getParamType($value)
+    {
+        switch (gettype($value)) {
+            case 'integer':
+                return PDO::PARAM_INT;
+            case 'boolean':
+                return PDO::PARAM_BOOL;
+            case 'NULL':
+                return PDO::PARAM_NULL;
+            default:
+                return PDO::PARAM_STR;
+        }
     }
 }
