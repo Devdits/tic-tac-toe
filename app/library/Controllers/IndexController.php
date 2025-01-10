@@ -49,8 +49,7 @@ class IndexController implements ControllerInterface
         $row = 0;
         $col = 0;
         if (!$isPlayerWin && $gameLogic->isFreeCellsLeft()) {
-            list($row, $col) = $gameLogic->findBestMove();
-            $gameLogic->setComputersMove($row, $col);
+            list($row, $col) = $gameLogic->makeMove();
             $isGameOver = $gameLogic->isGameOver();
             $isComputerWin = $gameLogic->doWeHaveWinner();
         }

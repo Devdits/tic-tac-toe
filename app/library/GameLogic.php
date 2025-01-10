@@ -31,18 +31,26 @@ class GameLogic
     /**
      * Good enough for MVP.
      * No one will notice.
+     * 
+     * @Mathew - reduced unwanted call stack and remove $gridSize calculation from repeated calls.
      */
-    public function findBestMove(): array
+    public function makeMove(): array
     {
-        $gridSize = count($this->matrix) - 1;
-        $row = rand(0, $gridSize);
-        $col = rand(0, $gridSize);
+        $availableMoves = [];
 
-        if ($this->matrix[$row][$col] === '') {
-            return [$row, $col];
+        foreach ($this->matrix as $rowIndex => $row) {
+            foreach ($row as $colIndex => $cell) {
+                if ($cell === null) {
+                    $availableMoves[] = [$rowIndex, $colIndex];
+                }
+            }
         }
 
-        return $this->findBestMove();
+        $computer_plays = array_rand($availableMoves);
+
+        $this->setComputersMove($computer_plays[0], $computer_plays[1]);
+        
+        return $availableMoves[$computer_plays];
     }
 
     public function setComputersMove(int $row, int $col): void
