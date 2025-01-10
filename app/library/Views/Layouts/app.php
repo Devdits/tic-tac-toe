@@ -18,6 +18,7 @@ use App\Views\Layouts\AppLayout;
     <link href="/www/bootstrap.min.css" rel="stylesheet">
     <link href="/www/style.css" rel="stylesheet">
     <script src="/www/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
@@ -35,7 +36,7 @@ use App\Views\Layouts\AppLayout;
 
     <div class="container">
         <?php if ($this->view->getTitle()) { ?>
-            <h1><?= htmlspecialchars($this->view->getTitle()) ?></h1>
+            <h1 class="flex items-center text-5xl font-extrabold text-gray-600 p-2"><?= htmlspecialchars($this->view->getTitle()) ?></h1>
         <?php } else { ?>
             <br/>
         <?php } ?>
