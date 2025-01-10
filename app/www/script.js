@@ -1,7 +1,38 @@
+var gameStart = null;
+
 function makeMove(buttonId) {
+  if(gameStart == null)
+      gameStart = new Date();
+
   setButtonsValue(buttonId, 'X');
   makeOpponentsTurn();
 }
+
+function updateLeaderBoard(name, gridSize, duration) {
+  duration = duration / 1000; // Convert to seconds.
+  fetch(
+    '/leaderboard/update',
+    {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        name: name,
+        gridSize: gridSize,
+        duration: duration,
+      }),
+    }
+  )
+  .then((response) => {
+    if (response.ok) {
+      console.log(response)
+      window.location.href = '/leaderboard';
+    }
+  })
+}
+
 
 function makeOpponentsTurn() {
   const matrix = [];
@@ -60,6 +91,7 @@ function makeOpponentsTurn() {
       }
 
       if (is_game_over) {
+        let gameEnd = new Date();
         document
           .querySelectorAll("#game_grid button")
           .forEach(  button => {
@@ -68,7 +100,8 @@ function makeOpponentsTurn() {
         );
 
         if (is_player_win) {
-          alert('Congratulations, you won!');
+          name = prompt('Congratulations, you won!. Please provide your name for the leaderboard.');
+          updateLeaderBoard(name, matrix.length, gameEnd - gameStart);
         }
         else if (is_computer_win) {
           alert('Computer won!');

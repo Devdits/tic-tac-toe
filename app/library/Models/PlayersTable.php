@@ -27,7 +27,7 @@ class PlayersTable extends AbstractTable
         );
     }
 
-    public function addRow(string $name, int $gridSize, int $playTimeSeconds, string $date): void
+    public function addRow(string $name, int $gridSize, int $playTimeSeconds): void
     {
         $this->executeSql(
             "
@@ -39,8 +39,8 @@ class PlayersTable extends AbstractTable
             [
                 ':name' => $name,
                 ':grid_size' => $gridSize,
-                ':play_time_seconds' => $playTimeSeconds,
-                ':date' => $date,
+                ':play_time_seconds' => (int)$playTimeSeconds,
+                ':date' => date('Y-m-d H:i:s'),
             ]
         );
     }

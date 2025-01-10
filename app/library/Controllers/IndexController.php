@@ -7,7 +7,7 @@ use App\Views\IndexView;
 use App\Views\AbstractView;
 use App\Views\JsonView;
 
-class IndexController implements ControllerInterface
+class IndexController extends Controller implements ControllerInterface
 {
     public function indexAction(): AbstractView
     {
@@ -36,8 +36,8 @@ class IndexController implements ControllerInterface
     public function opponentsTurnAction(): AbstractView
     {
         // Todo: Ask on StakeOverflow if it's good enough.
-        $requestJson = file_get_contents('php://input');
-        $request = json_decode($requestJson, true);
+
+        $request = $this->getJsonRequest();
 
         $matrix = $request['matrix'] ?? [];
 
