@@ -13,8 +13,10 @@ class LeaderboardController extends Controller implements ControllerInterface
     {
         $view = new LeaderboardView();
 
-        $players = (new PlayersTable())->getLeaders();
+        $players_table = new PlayersTable();
+        $players = $players_table->getLeaders();
         $view->players = $players;
+        $view->total_players = $players_table->getCount();
 
         return $view;
     }

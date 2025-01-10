@@ -6,6 +6,7 @@ class LeaderboardView extends AbstractView
 {
     /** @var array[][] */
     public array $players;
+    public int $total_players;
 
     public function __construct()
     {
