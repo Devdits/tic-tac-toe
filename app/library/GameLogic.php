@@ -48,7 +48,7 @@ class GameLogic
 
         $computer_plays = array_rand($availableMoves);
 
-        $this->setComputersMove($computer_plays[0], $computer_plays[1]);
+        $this->setComputersMove($availableMoves[$computer_plays][0], $availableMoves[$computer_plays][1]);
         
         return $availableMoves[$computer_plays];
     }
