@@ -15,9 +15,10 @@
             max="20"
             id="grid_size"
             name="grid_size"
+            class="pl-2"
             value="<?= $this->gridSize ?>"
         />
-        <input type="submit" value="Play" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 w-12 h-8 border border-gray-300 flex items-center justify-center">
+        <input type="submit" value="Play" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm  w-12 h-8 border border-gray-300 flex items-center justify-center">
     </form>
 </div>
 
@@ -31,7 +32,7 @@
                             $button_id = 'game_grid_' . $row . '_' . $col;
                             ?>
                         <td>
-                            <button class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700w-12 h-12 border border-gray-300 flex items-center justify-center" id="<?= $button_id ?>" onclick="makeMove('<?= $button_id ?>')"></button>
+                            <button class="text-gray-900 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 w-12 h-12 border border-gray-300 flex items-center justify-center" id="<?= $button_id ?>" onclick="makeMove('<?= $button_id ?>')"></button>
                         </td>
                     <?php } ?>
                 </tr>
