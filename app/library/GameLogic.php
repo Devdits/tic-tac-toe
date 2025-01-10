@@ -40,7 +40,7 @@ class GameLogic
 
         foreach ($this->matrix as $rowIndex => $row) {
             foreach ($row as $colIndex => $cell) {
-                if ($cell === null) {
+                if ($cell === '') {
                     $availableMoves[] = [$rowIndex, $colIndex];
                 }
             }
@@ -71,7 +71,7 @@ class GameLogic
      */
     public function isFreeCellsLeft(): bool
     {
-        $rows_that_have_at_least_one_empty_cell = array_filter($this->matrix, fn($row) => in_array(null, $row));
+        $rows_that_have_at_least_one_empty_cell = array_filter($this->matrix, fn($row) => in_array('', $row));
 
         return count($rows_that_have_at_least_one_empty_cell) > 0;
     }
