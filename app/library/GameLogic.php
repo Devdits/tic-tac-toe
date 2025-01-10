@@ -55,14 +55,18 @@ class GameLogic
         return !$this->isFreeCellsLeft() || $this->doWeHaveWinner();
     }
 
+    /**
+     * @Mathew
+     * Modified the function to make it smaller. It uses inbuilt functions to avoid unnecessary manual loops.
+     * 
+     * Inbuilt functions are faster as they are written in C.
+     */
     public function isFreeCellsLeft(): bool
     {
-        for ($col = 0; $col < count($this->matrix); $col++) {
-            for ($row = 0; $row < count($this->matrix); $row++) {
-                if ($this->matrix[$col][$row] === '') {
-                    return true;
-                }
-            }
+        $rows_that_have_at_least_one_empty_cell = array_filter($this->matrix, fn($row) => in_array(null, $row));
+
+        return count($rows_that_have_at_least_one_empty_cell) > 0;
+    }
         }
         return false;
     }
