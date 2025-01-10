@@ -136,7 +136,7 @@ class GameLogicTest extends TestCase
         ];
         $gameLogic = new GameLogic($matrix);
 
-        list($row, $col) = $gameLogic->findBestMove();
+        list($row, $col) = $gameLogic->makeMove();
         $this->assertSame(0, $row);
         $this->assertSame(2, $col);
     }
@@ -153,7 +153,7 @@ class GameLogicTest extends TestCase
         $gameLogic = new GameLogic($matrix);
 
         $this->expectExceptionMessage('No more available moves exists.');
-        $gameLogic->findBestMove();
+        $gameLogic->makeMove();
     }
 
 }
