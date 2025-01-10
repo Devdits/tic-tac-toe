@@ -6,6 +6,13 @@ class GameLogic
 {
     private array $matrix;
 
+    private $gridSize;
+
+    private function getGridSize()
+    {
+        return $this->gridSize ?? $this->gridSize = count($this->matrix);
+    }
+
     public function __construct(array $matrix)
     {
         if (empty($matrix)) {
@@ -75,53 +82,62 @@ class GameLogic
 
         return count($rows_that_have_at_least_one_empty_cell) > 0;
     }
+
+    private function doesLineIndicateWinner(array $line): bool
+    {
+        return count(array_unique($line)) === 1 && $line[0] !== '';
+    }
+
+    private function getMainDiagonalLine()
+    {
+        $mainDiagonal = [];
+        
+        for ($i = 0; $i < $this->getGridSize(); $i++) {
+            $mainDiagonal[] = $this->matrix[$i][$i];
         }
-        return false;
+
+        return $mainDiagonal;
+    }
+
+    private function getAntiDiagonalLine()
+    {
+        $antiDiagonal = [];
+
+        for ($i = 0; $i < $this->getGridSize(); $i++) {
+            $antiDiagonal[] = $this->matrix[$i][count($this->matrix) - $i - 1];
+        }
+
+        return $antiDiagonal;
     }
 
     /**
      * I just copypasted what ChatGPT gave me. Have no idea how it's working.
      * Need to write tests... Maybe.
+     * 
+     * @Mathew - updated code to be more readable, and moved out common patterns to it's own function
      */
     public function doWeHaveWinner(): bool
     {
-        // Check rows
-        for ($i = 0; $i < count($this->matrix); $i++) {
-            if (count(array_unique($this->matrix[$i])) === 1 && $this->matrix[$i][0] !== '') {
+        foreach($this->matrix as $row) {
+            if($this->doesLineIndicateWinner($row)) {
                 return true;
             }
         }
 
-        // Check columns
         for ($col = 0; $col < count($this->matrix); $col++) {
-            $column = [];
-            for ($row = 0; $row < count($this->matrix); $row++) {
-                $column[] = $this->matrix[$row][$col];
-            }
-            if (count(array_unique($column)) === 1 && $column[0] !== '') {
+            if($this->doesLineIndicateWinner(array_column($this->matrix, $col))) {
                 return true;
             }
         }
 
-        // Check main diagonal
-        $mainDiagonal = [];
-        for ($i = 0; $i < count($this->matrix); $i++) {
-            $mainDiagonal[] = $this->matrix[$i][$i];
-        }
-        if (count(array_unique($mainDiagonal)) === 1 && $mainDiagonal[0] !== '') {
+        if ($this->doesLineIndicateWinner($this->getMainDiagonalLine())) {
             return true;
         }
 
-        // Check anti-diagonal
-        $antiDiagonal = [];
-        for ($i = 0; $i < count($this->matrix); $i++) {
-            $antiDiagonal[] = $this->matrix[$i][count($this->matrix) - $i - 1];
-        }
-        if (count(array_unique($antiDiagonal)) === 1 && $antiDiagonal[0] !== '') {
+        if ($this->doesLineIndicateWinner($this->getAntiDiagonalLine())) {
             return true;
         }
 
-        // No winner
         return false;
     }
 }
