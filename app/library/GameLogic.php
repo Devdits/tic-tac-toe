@@ -34,15 +34,21 @@ class GameLogic
      */
     public function findBestMove(): array
     {
-        $gridSize = count($this->matrix) - 1;
-        $row = rand(0, $gridSize);
-        $col = rand(0, $gridSize);
-
-        if ($this->matrix[$row][$col] === '') {
-            return [$row, $col];
+        $allTiles = [];
+        $occupiedTiles = [];
+        foreach ($this->matrix as $row_id => $row) {
+            foreach ($row as $col_id => $col) {
+                $allTiles[] = $row_id . '_' . $col_id;
+                if ($this->matrix[$row_id][$col_id] !== '') {
+                    $occupiedTiles[] = $row_id . '_' . $col_id;
+                }
+            }
         }
-
-        return $this->findBestMove();
+        $availableTiles = array_values(array_diff($allTiles, $occupiedTiles));
+        $count = count($availableTiles) -1;
+        $tile = rand(0, $count);
+        list($row, $col) = explode('_', $availableTiles[$tile]);
+        return [(int)$row, (int)$col];
     }
 
     public function setComputersMove(int $row, int $col): void
