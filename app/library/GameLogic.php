@@ -28,21 +28,20 @@ class GameLogic
         $this->matrix = $matrix;
     }
 
-    /**
-     * Good enough for MVP.
-     * No one will notice.
-     */
     public function findBestMove(): array
     {
-        $gridSize = count($this->matrix) - 1;
-        $row = rand(0, $gridSize);
-        $col = rand(0, $gridSize);
-
-        if ($this->matrix[$row][$col] === '') {
-            return [$row, $col];
+        if (!$this->isFreeCellsLeft()) {
+            throw new \LogicException('No more available moves exists.');
         }
 
-        return $this->findBestMove();
+        $gridSize = count($this->matrix) - 1;
+
+        do {
+            $row = rand(0, $gridSize);
+            $col = rand(0, $gridSize);
+        } while ($this->matrix[$row][$col] !== '');
+
+        return [$row, $col];
     }
 
     public function setComputersMove(int $row, int $col): void

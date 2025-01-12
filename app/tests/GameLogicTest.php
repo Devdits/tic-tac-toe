@@ -143,8 +143,6 @@ class GameLogicTest extends TestCase
 
     public function testFindBestMoveIfNoMovesAvailable(): void
     {
-        $this->markTestSkipped('Allowed memory size bytes exhausted');
-        /** @noinspection PhpUnreachableStatementInspection */
         $matrix = [
             ['X', 'X', 'O'],
             ['O', 'O', 'X'],
