@@ -50,7 +50,6 @@ function makeOpponentsTurn() {
     .then((json) => {
       let is_game_over = json.is_game_over;
       let is_player_win = json.is_player_win;
-      let is_computer_win = json.is_computer_win;
 
       if (!is_game_over || !is_player_win) {
         let row = json.row + 1;
@@ -66,16 +65,7 @@ function makeOpponentsTurn() {
             button.disabled = true;
          }
         );
-
-        if (is_player_win) {
-          alert('Congratulations, you won!');
-        }
-        else if (is_computer_win) {
-          alert('Computer won!');
-        }
-        else {
-          alert('Nobody won :(');
-        }
+        window.location.href = window.location.origin + '/leaderboard';
       }
     })
 }
@@ -83,4 +73,29 @@ function makeOpponentsTurn() {
 function setButtonsValue(buttonId, text) {
   document.getElementById(buttonId).innerText = text;
   document.getElementById(buttonId).disabled = true;
+}
+
+const registerResults = (event) => {
+  event.preventDefault()
+  let player_name = document.getElementById('player_name');
+  fetch(
+    '/leaderboard/register-results',
+    {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ player_name: player_name.value }),
+    }
+  ).then((response) => {
+    if (response.ok) {
+      window.location.href = window.location.origin + '/leaderboard';
+    }
+    return response.json();
+  }).then((data) => {
+    const validationMessage = document.getElementById('register_results_validation');
+    validationMessage.innerHTML = data.message;
+    validationMessage.style.display = 'block';
+  })
 }

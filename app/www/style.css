@@ -57,3 +57,18 @@ body {
     text-align: center;
     font-weight: bold;
 }
+
+#winner_registration{
+    display: none;
+}
+
+#register_results_validation {
+    color: red;
+    font-size: 12px;
+    display: none;
+    margin-top: 5px;
+}
+
+#player_registration {
+    margin-top: 20px;
+}

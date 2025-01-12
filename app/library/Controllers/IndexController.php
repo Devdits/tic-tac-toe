@@ -7,15 +7,16 @@ use App\Views\IndexView;
 use App\Views\AbstractView;
 use App\Views\JsonView;
 
+session_start();
 class IndexController implements ControllerInterface
 {
     public function indexAction(): AbstractView
     {
         $gridSize = $this->getGridSize();
-
+        $_SESSION['start'] = time();
+        $_SESSION['grid_size'] = $gridSize;
         $view = new IndexView();
         $view->gridSize = $gridSize;
-
         return $view;
     }
 
@@ -45,6 +46,7 @@ class IndexController implements ControllerInterface
 
         $isGameOver = $gameLogic->isGameOver();
         $isPlayerWin = $gameLogic->doWeHaveWinner();
+        $_SESSION['player_win'] = $isPlayerWin;
         $isComputerWin = false;
         $row = 0;
         $col = 0;
@@ -65,6 +67,5 @@ class IndexController implements ControllerInterface
         ];
         return $view;
     }
-
 
 }

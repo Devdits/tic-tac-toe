@@ -7,7 +7,28 @@
 
 ?>
 <div class="toolbar">
-    <strong>Showing the top <?php echo $this->showNumberOfPlayers; ?></strong> out of <?php echo $this->numberOfPlayers; ?> players in total
+    <div>
+        <strong>Showing the top <?php echo $this->showNumberOfPlayers; ?></strong> out of <?php echo $this->numberOfPlayers; ?> players in total
+    </div>
+    <?php if ($this->playerWins) { ?>
+        <div id ="player_registration">
+            <strong>Congratulations you won! Please register yourself.</strong>
+            <form method="POST" action="/addPlayer">
+                <div>
+                    <label for="player_name">Players name</label>
+                    <input
+                            type="text"
+                            min="3"
+                            max="20"
+                            name="player_name"
+                            id="player_name"
+                    />
+                    <button id="register_result" onclick="registerResults(event)">Register my result</button>
+                </div>
+                <span id="register_results_validation" class="validation-message"></span>
+            </form>
+        </div>
+    <?php } ?>
 </div>
 <div class="content-container">
     <table id="leaderboard">
