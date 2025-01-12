@@ -104,7 +104,7 @@ async function makeOpponentsTurn() {
 
         if (is_player_win) {
           alert('Congratulations, you won!');
-          await insertWinner();
+          await saveWinner();
         }
         else if (is_computer_win) {
           alert('Computer won!');
@@ -123,8 +123,8 @@ function setButtonsValue(buttonId, text) {
   document.getElementById(buttonId).disabled = true;
 }
 
-async function insertWinner() {
-    return fetch("/index/insert-winner", {
+async function saveWinner() {
+    return fetch("/leaderboard/save-winner", {
       method: "POST",
       headers: {
         "Accept": "application/json",
