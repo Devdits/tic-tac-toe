@@ -4,26 +4,27 @@ namespace App\Models;
 
 class PlayersTable extends AbstractTable
 {
+    const NUMBER_OF_PLAYERS_SHOWN = 20;
     protected function getTableName(): string
     {
         return 'players';
     }
 
-    public function getLeaders(int $gridSize): array
+    public function getLeaders(): array
     {
+        $limit = self::NUMBER_OF_PLAYERS_SHOWN;
         return $this->executeSql(
             "
                 SELECT
                     name,
                     play_time_seconds,
-                    grid_size
+                    grid_size,
+                    ctime
                 FROM players
-                WHERE
-                    grid_size = :grid_size
+                ORDER BY grid_size DESC, play_time_seconds ASC
+                LIMIT $limit
             ",
-            [
-                ':grid_size' => $gridSize,
-            ]
+            []
         );
     }
 

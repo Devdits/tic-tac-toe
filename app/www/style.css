@@ -24,3 +24,36 @@ body {
     text-align: center;
     line-height: 0;
 }
+
+#leaderboard {
+    width: 100%;
+    text-align: left;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#leaderboard th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    text-align: center;
+}
+
+#leaderboard td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+#leaderboard tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#leaderboard tr:hover {
+    background-color: #e7e7e7;
+}
+
+#leaderboard td:first-child {
+    text-align: center;
+    font-weight: bold;
+}

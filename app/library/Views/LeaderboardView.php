@@ -7,6 +7,10 @@ class LeaderboardView extends AbstractView
     /** @var array[][] */
     public array $players;
 
+    public int $numberOfPlayers;
+
+    public int $showNumberOfPlayers;
+
     public function __construct()
     {
         $this->setTitle("Leaderboard");
