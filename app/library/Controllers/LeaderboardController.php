@@ -10,11 +10,12 @@ class LeaderboardController implements ControllerInterface
 {
     public function indexAction(): AbstractView
     {
-        $view = new LeaderboardView();
+        $totalPlayers = (new PlayersTable())->getCount();
+        $leaders = (new PlayersTable())->getLeaders(); 
 
-        // Todo: redo this crap!
-        $players = (new PlayersTable())->getLeaders(10);
-        $view->players = $players;
+        $view = new LeaderboardView();
+        $view->totalPlayers = $totalPlayers;
+        $view->leaders = $leaders;
 
         return $view;
     }

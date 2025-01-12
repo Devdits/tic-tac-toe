@@ -4,8 +4,11 @@ namespace App\Views;
 
 class LeaderboardView extends AbstractView
 {
+    /** @var int */
+    public int $totalPlayers;
+
     /** @var array[][] */
-    public array $players;
+    public array $leaders;
 
     public function __construct()
     {

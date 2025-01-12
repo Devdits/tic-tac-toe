@@ -9,7 +9,7 @@ class PlayersTable extends AbstractTable
         return 'players';
     }
 
-    public function getLeaders(int $gridSize): array
+    public function getLeaders(int $limit = 20): array
     {
         return $this->executeSql(
             "
@@ -18,12 +18,9 @@ class PlayersTable extends AbstractTable
                     play_time_seconds,
                     grid_size
                 FROM players
-                WHERE
-                    grid_size = :grid_size
-            ",
-            [
-                ':grid_size' => $gridSize,
-            ]
+                ORDER BY grid_size DESC, play_time_seconds ASC
+                LIMIT $limit
+            "
         );
     }
 
