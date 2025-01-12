@@ -1,9 +1,42 @@
+let isFirstMove = true;
+let timerInterval;
+let playTimeSeconds = 1;
+
+window.onload = () => {
+  toggleButtons();
+
+  document.getElementById("player_name")?.addEventListener("change", () => {
+    toggleButtons();
+  });
+};
+
+function toggleButtons() {
+  document.querySelectorAll("#game_grid button").forEach((button) => {
+    button.disabled = document.getElementById("player_name")?.value.trim() === "";
+  });
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    playTimeSeconds++;
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
 function makeMove(buttonId) {
+if (isFirstMove) {
+    isFirstMove = false;
+    startTimer();
+  }
+
   setButtonsValue(buttonId, 'X');
   makeOpponentsTurn();
 }
 
-function makeOpponentsTurn() {
+async function makeOpponentsTurn() {
   const matrix = [];
 
   let row = 1;
@@ -47,7 +80,7 @@ function makeOpponentsTurn() {
     }
     return Promise.reject(response); // 2. reject instead of throw
   })
-    .then((json) => {
+    .then(async (json) => {
       let is_game_over = json.is_game_over;
       let is_player_win = json.is_player_win;
       let is_computer_win = json.is_computer_win;
@@ -60,6 +93,8 @@ function makeOpponentsTurn() {
       }
 
       if (is_game_over) {
+        stopTimer();
+
         document
           .querySelectorAll("#game_grid button")
           .forEach(  button => {
@@ -69,6 +104,7 @@ function makeOpponentsTurn() {
 
         if (is_player_win) {
           alert('Congratulations, you won!');
+          await insertWinner();
         }
         else if (is_computer_win) {
           alert('Computer won!');
@@ -76,6 +112,8 @@ function makeOpponentsTurn() {
         else {
           alert('Nobody won :(');
         }
+
+        window.location.href = "/leaderboard"; // Good enough for MVP.
       }
     })
 }
@@ -84,3 +122,32 @@ function setButtonsValue(buttonId, text) {
   document.getElementById(buttonId).innerText = text;
   document.getElementById(buttonId).disabled = true;
 }
+
+async function insertWinner() {
+    return fetch("/index/insert-winner", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        player_name: document.getElementById("player_name")?.value,
+        grid_size: document.getElementById("grid_size")?.value,
+        play_time_seconds: playTimeSeconds,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .then((json) => {
+        if (json.success) {
+            return json;
+        }
+        
+        console.error("Insertion of winner failed:", json.message || "Unknown error");
+        return Promise.reject(json);
+      });
+  }

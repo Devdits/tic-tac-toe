@@ -4,6 +4,7 @@ namespace App\Views;
 
 class IndexView extends AbstractView
 {
+    public string $playerName;
     public int $gridSize;
 
     public function __construct()
