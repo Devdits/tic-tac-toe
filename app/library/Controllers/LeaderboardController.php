@@ -13,6 +13,9 @@ class LeaderboardController implements ControllerInterface
 {
     const INPUT_VALIDATION_MESSAGE = 'Input must be between 3 and 20 characters and contain only alphanumeric characters.';
     const MISSING_DATA_MESSAGE = 'Missing data.';
+    const PLAYER_NAME_MIN_LENGTH = 3;
+    const PLAYER_NAME_MAX_LENGTH = 20;
+
     public function indexAction(): AbstractView
     {
         $view = new LeaderboardView();
@@ -39,21 +42,27 @@ class LeaderboardController implements ControllerInterface
     public function registerResultsAction(): AbstractView
     {
         $view = new JsonView();
-        $message = 'ok';
+        $message = '';
         $requestJson = file_get_contents('php://input');
         $request = json_decode($requestJson, true);
         $playerName = $request['player_name'] ?? null;
-        if (!preg_match('/^[a-zA-Z0-9]{3,20}$/', $playerName)) {
+        $regularExpression = sprintf('/^[a-zA-Z0-9]{%d,%d}$/', self::PLAYER_NAME_MIN_LENGTH, self::PLAYER_NAME_MAX_LENGTH);
+        if (!preg_match($regularExpression, $playerName)) {
             $view->setHttpResponseCode(400);
             $message = self::INPUT_VALIDATION_MESSAGE;
         } else if (isset($_SESSION['grid_size']) && isset($_SESSION['play_time_seconds'])) {
             $gridSize = $_SESSION['grid_size'];
             $playTimeSeconds = $_SESSION['play_time_seconds'];
-            $playersTable = new PlayersTable();
-            $playersTable->addRow($playerName, $gridSize, $playTimeSeconds, date('Y-m-d H:i:s'));
+            try {
+                $playersTable = new PlayersTable();
+                $playersTable->addRow($playerName, $gridSize, $playTimeSeconds, date('Y-m-d H:i:s'));
+            } catch (\Exception $e) {
+                $view->setHttpResponseCode(500);
+                $message = $e->getMessage();
+            }
             session_unset();
         } else {
-            $view->setHttpResponseCode(400);
+            $view->setHttpResponseCode(500);
             $message = self::MISSING_DATA_MESSAGE;
         }
 
