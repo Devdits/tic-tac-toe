@@ -17,6 +17,8 @@
             name="grid_size"
             value="<?= $this->gridSize ?>"
         />
+        <input type="text" name="player_name" id="player_name" value="<?= $this->playerName ?>">
+        <input type="hidden" name="start_time" id="start_time" value="<?= date('U') ?>">
         <input type="submit" value="Play">
     </form>
 </div>

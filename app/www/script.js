@@ -9,6 +9,10 @@ function makeOpponentsTurn() {
   let row = 1;
   let col = 1;
   let rowTexts = [];
+  let playerName = document.getElementById('player_name').value ?? 'Player name';
+  let startTime = document.getElementById('start_time').value ?? 0;
+  let gridSize = document.getElementById('grid_size').value ?? 3;
+
   do {
     const buttonId = `game_grid_${row}_${col}`;
 
@@ -38,7 +42,14 @@ function makeOpponentsTurn() {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ matrix: matrix }),
+      body: JSON.stringify(
+        { 
+          matrix: matrix, 
+          player_name: playerName, 
+          start_time: startTime, 
+          grid_size: gridSize 
+        }
+      ),
     }
   )
   .then((response) => {
