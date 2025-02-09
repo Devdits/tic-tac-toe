@@ -45,6 +45,33 @@ class GameLogic
         return $this->findBestMove();
     }
 
+    /**
+     * At least it doesn't recurse...
+     */
+    public function findAMove(): array 
+    {
+        $freeRows = $this->findPlayableRows();
+        $freeRow = array_rand($freeRows);
+        $freeColumn = $freeRows[$freeRow][array_rand($freeRows[$freeRow])];
+
+        return [$freeRow, $freeColumn];
+    }
+
+    public function findPlayableRows(): array 
+    {
+        $playableRows = [];
+
+        foreach($this->matrix as $index => $row) {
+            $freeCells = array_keys($row, '');
+
+            if(count($freeCells)) {
+                $playableRows[$index] = $freeCells;
+            }
+        }
+
+        return $playableRows;
+    }
+
     public function setComputersMove(int $row, int $col): void
     {
         $this->matrix[$row][$col] = 'O';

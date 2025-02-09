@@ -4,11 +4,13 @@ namespace App\Views;
 
 class IndexView extends AbstractView
 {
-    public int $gridSize;
+    public int    $gridSize;
+    public string $playerName;
 
     public function __construct()
     {
-        $this->setTitle("Hello player!");
+        $this->playerName = ($_GET['player_name']) ?? "Player Name";
+        $this->setTitle( "Hello " . $this->playerName . "!");
     }
 
     public function render(): void

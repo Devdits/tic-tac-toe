@@ -13,8 +13,10 @@ class LeaderboardController implements ControllerInterface
         $view = new LeaderboardView();
 
         // Todo: redo this crap!
-        $players = (new PlayersTable())->getLeaders(10);
+        $players = (new PlayersTable())->getTotalLeaders();
+        $playerCount = count((new PlayersTable())->getAllUniquePlayers());
         $view->players = $players;
+        $view->playerCount = $playerCount;
 
         return $view;
     }

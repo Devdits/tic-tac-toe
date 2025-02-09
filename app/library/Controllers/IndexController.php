@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\GameLogic;
+use App\Models\PlayersTable;
 use App\Views\IndexView;
 use App\Views\AbstractView;
 use App\Views\JsonView;
@@ -29,6 +30,21 @@ class IndexController implements ControllerInterface
         return $gridSize;
     }
 
+    private function getCurrentTimeString(): string
+    {
+        return date('Y-m-d h:i:s');
+    }
+
+    private function calculateElapsedTime($startTimeU): int
+    {
+        if (!is_numeric($startTimeU)) {
+            return 0;
+        }
+
+        $now = (int) date('U');
+        return ($now - (int) $startTimeU);
+    }
+
     /**
      * It is used in Ajax requests.
      * @noinspection PhpUnused
@@ -40,6 +56,9 @@ class IndexController implements ControllerInterface
         $request = json_decode($requestJson, true);
 
         $matrix = $request['matrix'] ?? [];
+        $playerName = $request['player_name'] ?? 'Unknown player';
+        $gridSize = $request['grid_size'] ?? 3;
+        $startTime = $request['start_time'] ?? 0;
 
         $gameLogic = new GameLogic($matrix);
 
@@ -49,10 +68,15 @@ class IndexController implements ControllerInterface
         $row = 0;
         $col = 0;
         if (!$isPlayerWin && $gameLogic->isFreeCellsLeft()) {
-            list($row, $col) = $gameLogic->findBestMove();
+            list($row, $col) = $gameLogic->findAMove();
             $gameLogic->setComputersMove($row, $col);
             $isGameOver = $gameLogic->isGameOver();
             $isComputerWin = $gameLogic->doWeHaveWinner();
+        }
+
+        if ($isPlayerWin) {
+            $playersTable = new PlayersTable();
+            $playersTable->addRow($playerName, $gridSize, $this->calculateElapsedTime($startTime), $this->getCurrentTimeString());
         }
 
         $view = new JsonView();
