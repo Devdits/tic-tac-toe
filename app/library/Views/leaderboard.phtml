@@ -8,15 +8,17 @@
 ?>
 
 <div class="row content-container col-xs-12">
-    <table>
+    <table class="table">
         <tr>
-            <th>Name</th>
-            <th>Play time (s)</th>
-            <th>Grid size</th>
-            <th>Date</th>
+            <th></th>
+            <th scope="col">Name</th>
+            <th scope="col">Play time (s)</th>
+            <th scope="col">Grid size</th>
+            <th scope="col">Date</th>
         </tr>
     <?php for ($row = 0; $row < count($this->players); $row++) { ?>
         <tr>
+            <th scope="row"><?= $row+1 ?></th>
             <td><?= ($this->players[$row]['name']) ?? '' ?></td>
             <td><?= ($this->players[$row]['play_time_seconds']) ?? '' ?></td>
             <td><?= ($this->players[$row]['grid_size']) ?? '' ?></td>
